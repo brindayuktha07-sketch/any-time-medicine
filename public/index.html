@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ATM - Any Time Medicine</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== SPLASH ===================== -->
+  <div id="splash-view">
+    <div class="splash-letters" id="splash-letters">
+      <span class="splash-letter">A</span>
+      <span class="splash-letter">T</span>
+      <span class="splash-letter">M</span>
+    </div>
+    <div class="splash-cross" id="splash-cross"></div>
+    <div class="splash-tagline" id="splash-tagline">ANY TIME MEDICINE</div>
+  </div>
+
+  <!-- ===================== ROLE SELECT ===================== -->
+  <div id="role-select-view" class="centered-view hidden">
+    <div class="auth-shell">
+      <div class="brand-row"><div class="brand-cross"></div>
+        <div><div class="brand-title">ATM</div><div class="brand-sub">ANY TIME MEDICINE</div></div>
+      </div>
+      <div class="card" style="padding:26px;">
+        <p class="form-sub" style="text-align:center;margin-bottom:18px;">Continue as</p>
+        <div class="role-grid">
+          <div class="card role-card" data-role="patient">
+            <div class="role-icon">🧑‍🦱</div>
+            <div class="role-name">Patient</div>
+          </div>
+          <div class="card role-card" data-role="doctor">
+            <div class="role-icon">🩺</div>
+            <div class="role-name">Doctor</div>
+          </div>
+          <div class="card role-card" data-role="admin">
+            <div class="role-icon">🛡️</div>
+            <div class="role-name">Admin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PATIENT AUTH ===================== -->
+  <div id="patient-auth-view" class="centered-view hidden">
+    <div class="auth-shell">
+      <a href="#" class="back-link" data-back="role-select">&larr; Choose a different role</a>
+      <div class="card form-card">
+        <div class="form-toggle">
+          <button data-mode="login" class="active">Login</button>
+          <button data-mode="signup">First time / Sign up</button>
+        </div>
+
+        <!-- Login -->
+        <div id="patient-login-form">
+          <h3 class="form-title">Patient Login</h3>
+          <p class="form-sub">Enter your phone number and password</p>
+          <label>Phone Number</label><input type="tel" id="pl-phone" placeholder="10-digit mobile number" />
+          <label>Password</label><input type="password" id="pl-password" placeholder="Password" />
+          <div style="margin-top:18px;display:flex;gap:10px;align-items:center;justify-content:space-between;">
+            <button class="btn" id="pl-submit">Login</button>
+            <a href="#" class="back-link" id="pl-forgot" style="margin:0;">Forgot password?</a>
+          </div>
+          <p class="error-msg" id="pl-error"></p>
+        </div>
+
+        <!-- Forgot password -->
+        <div id="patient-forgot-form" class="hidden">
+          <a href="#" class="back-link" id="pf-back-to-login">&larr; Back to login</a>
+          <h3 class="form-title">Reset Password</h3>
+          <label>Phone Number</label><input type="tel" id="pf-phone" placeholder="Registered mobile number" />
+          <div class="otp-row"><div style="flex:1"><label>OTP</label><input id="pf-otp" placeholder="Enter OTP" /></div>
+            <button class="btn-soft" id="pf-send-otp">Send OTP</button></div>
+          <label>New Password</label><input type="password" id="pf-new-password" placeholder="New password" />
+          <div style="margin-top:18px;"><button class="btn" id="pf-submit">Reset Password</button></div>
+          <p class="error-msg" id="pf-error"></p>
+          <p class="success-msg" id="pf-success"></p>
+        </div>
+
+        <!-- Signup -->
+        <div id="patient-signup-form" class="hidden">
+          <h3 class="form-title">Patient Sign Up</h3>
+          <label>Full Name</label><input id="ps-name" placeholder="Your full name" />
+          <label>Phone Number</label><input type="tel" id="ps-phone" placeholder="10-digit mobile number" />
+          <label>Aadhar Number</label><input id="ps-aadhar" placeholder="12-digit Aadhar number" />
+          <label>Email (required — your OTP and receipt are sent here)</label><input type="email" id="ps-email" placeholder="you@example.com" />
+          <label>Create Password</label><input type="password" id="ps-password" placeholder="Create password" />
+          <label>Confirm Password</label><input type="password" id="ps-confirm" placeholder="Confirm password" />
+
+          <div class="camera-box">
+            <p style="margin:0 0 8px;color:var(--text-dim);font-size:13px;">Capture your photo</p>
+            <video id="ps-video" autoplay muted playsinline class="hidden"></video>
+            <img id="ps-photo-preview" class="hidden" />
+            <div class="camera-actions">
+              <button class="btn-soft" id="ps-start-cam">Open Camera</button>
+              <button class="btn-soft hidden" id="ps-capture">Capture</button>
+              <button class="btn-soft hidden" id="ps-retake">Retake</button>
+            </div>
+          </div>
+
+          <div class="otp-row" style="margin-top:16px;">
+            <div style="flex:1"><label>OTP</label><input id="ps-otp" placeholder="Enter OTP sent to your email" /></div>
+            <button class="btn-soft" id="ps-send-otp">Send OTP</button>
+          </div>
+
+          <div style="margin-top:18px;"><button class="btn" id="ps-submit">Create Account</button></div>
+          <p class="error-msg" id="ps-error"></p>
+          <p class="success-msg" id="ps-success"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DOCTOR AUTH ===================== -->
+  <div id="doctor-auth-view" class="centered-view hidden">
+    <div class="auth-shell">
+      <a href="#" class="back-link" data-back="role-select">&larr; Choose a different role</a>
+      <div class="card form-card">
+        <div class="form-toggle">
+          <button data-mode="login" class="active">Login</button>
+          <button data-mode="signup">First time / Sign up</button>
+        </div>
+
+        <!-- Login (phone + OTP) -->
+        <div id="doctor-login-form">
+          <h3 class="form-title">Doctor Login</h3>
+          <p class="form-sub">Enter your phone number, we'll send you an OTP</p>
+          <label>Phone Number</label><input type="tel" id="dl-phone" placeholder="10-digit mobile number" />
+          <div class="otp-row"><div style="flex:1"><label>OTP</label><input id="dl-otp" placeholder="Enter OTP" /></div>
+            <button class="btn-soft" id="dl-send-otp">Send OTP</button></div>
+          <div style="margin-top:18px;"><button class="btn" id="dl-submit">Login</button></div>
+          <p class="error-msg" id="dl-error"></p>
+        </div>
+
+        <!-- Signup -->
+        <div id="doctor-signup-form" class="hidden">
+          <h3 class="form-title">Doctor Sign Up</h3>
+          <label>Full Name</label><input id="ds-name" placeholder="Dr. Full name" />
+          <label>Medical ID</label><input id="ds-medid" placeholder="Medical registration ID" />
+          <label>Phone Number</label><input type="tel" id="ds-phone" placeholder="10-digit mobile number" />
+          <label>Email (required — your OTP is sent here)</label><input type="email" id="ds-email" placeholder="you@example.com" />
+          <label>Years of Experience</label><input type="number" id="ds-exp" placeholder="e.g. 5" min="0" />
+          <label>Specialty (optional, helps route the right cases to you)</label><input id="ds-specialty" placeholder="e.g. General Physician, Pediatrics, Cardiology" />
+          <label>Medical Certificate</label><input type="file" id="ds-cert" accept="image/*" />
+          <label>Create Password</label><input type="password" id="ds-password" placeholder="Create password" />
+          <label>Confirm Password</label><input type="password" id="ds-confirm" placeholder="Confirm password" />
+
+          <div class="camera-box">
+            <p style="margin:0 0 8px;color:var(--text-dim);font-size:13px;">Capture your photo on the spot</p>
+            <video id="ds-video" autoplay muted playsinline class="hidden"></video>
+            <img id="ds-photo-preview" class="hidden" />
+            <div class="camera-actions">
+              <button class="btn-soft" id="ds-start-cam">Open Camera</button>
+              <button class="btn-soft hidden" id="ds-capture">Capture</button>
+              <button class="btn-soft hidden" id="ds-retake">Retake</button>
+            </div>
+          </div>
+
+          <div class="otp-row" style="margin-top:16px;">
+            <div style="flex:1"><label>OTP</label><input id="ds-otp" placeholder="Enter OTP sent to your email" /></div>
+            <button class="btn-soft" id="ds-send-otp">Send OTP</button>
+          </div>
+
+          <div style="margin-top:18px;"><button class="btn" id="ds-submit">Create Account</button></div>
+          <p class="error-msg" id="ds-error"></p>
+          <p class="success-msg" id="ds-success"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ADMIN AUTH ===================== -->
+  <div id="admin-auth-view" class="centered-view hidden">
+    <div class="auth-shell">
+      <a href="#" class="back-link" data-back="role-select">&larr; Choose a different role</a>
+      <div class="card form-card">
+        <div class="form-toggle">
+          <button data-mode="login" class="active">Login</button>
+          <button data-mode="signup">First time / Sign up</button>
+        </div>
+
+        <div id="admin-login-form">
+          <h3 class="form-title">Admin Login</h3>
+          <label>Phone Number</label><input type="tel" id="al-phone" placeholder="10-digit mobile number" />
+          <label>Password</label><input type="password" id="al-password" placeholder="Password" />
+          <div style="margin-top:18px;"><button class="btn" id="al-submit">Login</button></div>
+          <p class="error-msg" id="al-error"></p>
+        </div>
+
+        <div id="admin-signup-form" class="hidden">
+          <h3 class="form-title">Admin Sign Up</h3>
+          <label>Full Name</label><input id="as-name" placeholder="Your full name" />
+          <label>Phone Number</label><input type="tel" id="as-phone" placeholder="10-digit mobile number" />
+          <label>Email (required — your OTP is sent here)</label><input type="email" id="as-email" placeholder="you@example.com" />
+          <label>Create Password</label><input type="password" id="as-password" placeholder="Create password" />
+          <label>Confirm Password</label><input type="password" id="as-confirm" placeholder="Confirm password" />
+
+          <div class="camera-box">
+            <p style="margin:0 0 8px;color:var(--text-dim);font-size:13px;">Capture your photo</p>
+            <video id="as-video" autoplay muted playsinline class="hidden"></video>
+            <img id="as-photo-preview" class="hidden" />
+            <div class="camera-actions">
+              <button class="btn-soft" id="as-start-cam">Open Camera</button>
+              <button class="btn-soft hidden" id="as-capture">Capture</button>
+              <button class="btn-soft hidden" id="as-retake">Retake</button>
+            </div>
+          </div>
+
+          <div class="otp-row" style="margin-top:16px;">
+            <div style="flex:1"><label>OTP</label><input id="as-otp" placeholder="Enter OTP sent to your email" /></div>
+            <button class="btn-soft" id="as-send-otp">Send OTP</button>
+          </div>
+
+          <div style="margin-top:18px;"><button class="btn" id="as-submit">Create Account</button></div>
+          <p class="error-msg" id="as-error"></p>
+          <p class="success-msg" id="as-success"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PATIENT DASHBOARD ===================== -->
+  <div id="patient-dashboard-view" class="hidden">
+    <div class="dash-header">
+      <div class="dash-brand"><div class="brand-cross"></div> ATM</div>
+      <div class="dash-profile" id="pd-profile-trigger">
+        <div><div class="dash-profile-name" id="pd-name" style="text-align:right;"></div><div class="dash-profile-sub">Patient</div></div>
+        <div class="avatar" id="pd-avatar">?</div>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-toprow">
+        <h2>Consultation History</h2>
+        <button class="btn" id="pd-new-consult-btn">+ New Consultation</button>
+      </div>
+      <div class="card" style="padding:6px 0;">
+        <table>
+          <thead><tr><th>Date</th><th>Doctor</th><th>Doctor's Cases Handled</th><th>Medicines Dispensed</th><th>Total Paid</th></tr></thead>
+          <tbody id="pd-history-body"></tbody>
+        </table>
+        <div class="empty-state hidden" id="pd-history-empty">No consultations yet. Start your first one!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New consultation modal -->
+  <div id="pd-new-consult-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <button class="modal-close" data-close="pd-new-consult-modal">&times;</button>
+      <h3 class="form-title">New Consultation</h3>
+      <label>Symptoms</label><textarea id="nc-symptoms" rows="3" placeholder="Describe what you're experiencing"></textarea>
+      <label>Medicines currently taking (if any)</label><textarea id="nc-meds" rows="2" placeholder="e.g. Metformin 500mg"></textarea>
+      <label>Allergies (if any)</label><input id="nc-allergies" placeholder="e.g. Penicillin" />
+
+      <label>Vitals</label>
+      <p class="field-hint" style="margin-top:-4px;">Tap to fetch a reading from the vitals machine</p>
+      <div class="vitals-grid">
+        <div class="vital-chip"><div class="v-label">Temperature</div><div class="v-value" id="v-temp">--</div><button class="btn-soft" style="margin-top:8px;width:100%;" data-vital="temp">Fetch</button></div>
+        <div class="vital-chip"><div class="v-label">Blood Pressure</div><div class="v-value" id="v-bp">--</div><button class="btn-soft" style="margin-top:8px;width:100%;" data-vital="bp">Fetch</button></div>
+        <div class="vital-chip"><div class="v-label">Pulse</div><div class="v-value" id="v-pulse">--</div><button class="btn-soft" style="margin-top:8px;width:100%;" data-vital="pulse">Fetch</button></div>
+        <div class="vital-chip"><div class="v-label">SpO2</div><div class="v-value" id="v-spo2">--</div><button class="btn-soft" style="margin-top:8px;width:100%;" data-vital="spo2">Fetch</button></div>
+      </div>
+
+      <div style="margin-top:20px;"><button class="btn" id="nc-submit" style="width:100%;">Send Request to Doctor</button></div>
+      <p class="error-msg" id="nc-error"></p>
+      <p class="success-msg" id="nc-success"></p>
+    </div>
+  </div>
+
+  <!-- Patient waiting-for-doctor modal -->
+  <div id="pd-waiting-modal" class="modal-backdrop hidden">
+    <div class="card modal-box" style="text-align:center;">
+      <h3 class="form-title">Request Sent</h3>
+      <p class="form-sub">Waiting for a doctor to accept your consultation...</p>
+      <div style="font-size:40px;margin:16px 0;">⏳</div>
+      <button class="btn-soft" data-close="pd-waiting-modal">Cancel / Close</button>
+    </div>
+  </div>
+
+  <!-- ===================== DOCTOR DASHBOARD ===================== -->
+  <div id="doctor-dashboard-view" class="hidden">
+    <div class="dash-header">
+      <div class="dash-brand"><div class="brand-cross"></div> ATM</div>
+      <div style="display:flex;align-items:center;gap:18px;">
+        <label style="margin:0;display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;color:var(--text-dim);font-size:13px;">
+          <input type="checkbox" id="dd-online-toggle" style="width:auto;" checked /> Available for requests
+        </label>
+        <div class="dash-profile" id="dd-profile-trigger">
+          <div><div class="dash-profile-name" id="dd-name" style="text-align:right;"></div><div class="dash-profile-sub" id="dd-cases-sub">Doctor</div></div>
+          <div class="avatar" id="dd-avatar">?</div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-toprow">
+        <h2>Incoming Consultation Requests</h2>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="badge" id="dd-medicine-stock-badge">-- medicines in ATM</span>
+          <button class="btn-outline" id="dd-history-btn">View Case History</button>
+        </div>
+      </div>
+      <div id="dd-requests-list"></div>
+      <div class="empty-state hidden" id="dd-requests-empty">No pending requests right now.</div>
+    </div>
+  </div>
+
+  <!-- Doctor history modal -->
+  <div id="dd-history-modal" class="modal-backdrop hidden">
+    <div class="card modal-box" style="max-width:640px;">
+      <button class="modal-close" data-close="dd-history-modal">&times;</button>
+      <h3 class="form-title">Case History <span class="badge" id="dd-history-count">0</span></h3>
+      <table>
+        <thead><tr><th>Date</th><th>Patient</th><th>Symptoms</th><th>Bill</th></tr></thead>
+        <tbody id="dd-history-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Request detail modal -->
+  <div id="dd-request-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <button class="modal-close" data-close="dd-request-modal">&times;</button>
+      <h3 class="form-title" id="drm-patient-name"></h3>
+      <p class="form-sub">Consultation Request</p>
+      <label>Symptoms</label><p id="drm-symptoms"></p>
+      <label>Current Medicines</label><p id="drm-meds"></p>
+      <label>Allergies</label><p id="drm-allergies"></p>
+      <label>Vitals</label>
+      <div class="vitals-grid" id="drm-vitals"></div>
+      <div style="margin-top:20px;"><button class="btn" id="drm-accept" style="width:100%;">Accept &amp; Start Video Call</button></div>
+    </div>
+  </div>
+
+  <!-- ===================== ADMIN DASHBOARD ===================== -->
+  <div id="admin-dashboard-view" class="hidden">
+    <div class="dash-header">
+      <div class="dash-brand"><div class="brand-cross"></div> ATM</div>
+      <div class="dash-profile" id="ad-profile-trigger">
+        <div><div class="dash-profile-name" id="ad-name" style="text-align:right;"></div><div class="dash-profile-sub">Admin</div></div>
+        <div class="avatar" id="ad-avatar">?</div>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-toprow">
+        <h2>Medicine Inventory</h2>
+        <button class="btn" id="ad-load-atm-btn">Load ATM with Medicines</button>
+      </div>
+      <div class="card" style="padding:6px 0;">
+        <table>
+          <thead><tr><th>Medicine</th><th>Price</th><th>Quantity</th><th>Expiry Date</th><th>Status</th></tr></thead>
+          <tbody id="ad-medicine-body"></tbody>
+        </table>
+      </div>
+
+      <div class="dash-toprow" style="margin-top:34px;">
+        <h2>Doctors</h2>
+      </div>
+      <p class="field-hint" style="margin-top:-8px;margin-bottom:10px;">Click a doctor to view their case history.</p>
+      <div class="card" style="padding:6px 0;">
+        <table>
+          <thead><tr><th>Name</th><th>Specialty</th><th>Experience</th><th>Status</th><th>Cases Handled</th></tr></thead>
+          <tbody id="ad-doctors-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin: doctor case-history drill-down modal -->
+  <div id="ad-doctor-history-modal" class="modal-backdrop hidden">
+    <div class="card modal-box" style="max-width:640px;">
+      <button class="modal-close" data-close="ad-doctor-history-modal">&times;</button>
+      <h3 class="form-title" id="adh-doctor-name"></h3>
+      <p class="form-sub"><span class="badge" id="adh-case-count">0 cases</span></p>
+      <table>
+        <thead><tr><th>Date</th><th>Patient</th><th>Symptoms</th><th>Bill</th></tr></thead>
+        <tbody id="adh-history-body"></tbody>
+      </table>
+      <div class="empty-state hidden" id="adh-history-empty">This doctor hasn't completed any cases yet.</div>
+    </div>
+  </div>
+
+  <!-- ATM unlock modal -->
+  <div id="ad-unlock-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <button class="modal-close" data-close="ad-unlock-modal">&times;</button>
+      <h3 class="form-title">Unlock ATM</h3>
+      <p class="form-sub">Enter the ATM demo password to load medicines.</p>
+      <label>Password</label><input type="password" id="ad-unlock-password" placeholder="Demo password: ATM@2026" />
+      <div style="margin-top:16px;"><button class="btn" id="ad-unlock-submit" style="width:100%;">Unlock</button></div>
+      <p class="error-msg" id="ad-unlock-error"></p>
+    </div>
+  </div>
+
+  <!-- Load medicine modal -->
+  <div id="ad-load-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <button class="modal-close" data-close="ad-load-modal">&times;</button>
+      <h3 class="form-title">Load Medicine into ATM</h3>
+      <label>Medicine Name</label><input id="al-med-name" placeholder="e.g. Paracetamol 500mg" />
+      <label>Price per unit (₹)</label><input type="number" id="al-med-price" min="0" step="0.5" placeholder="e.g. 5" />
+      <label>Quantity</label><input type="number" id="al-med-qty" min="1" placeholder="e.g. 100" />
+      <label>Expiry Date</label><input type="date" id="al-med-expiry" />
+      <div style="margin-top:16px;"><button class="btn" id="al-med-submit" style="width:100%;">Add to ATM</button></div>
+      <p class="error-msg" id="al-med-error"></p>
+      <p class="success-msg" id="al-med-success"></p>
+    </div>
+  </div>
+
+  <!-- ===================== PROFILE VIEW / EDIT MODAL (shared by all 3 roles) ===================== -->
+  <div id="profile-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <button class="modal-close" data-close="profile-modal">&times;</button>
+      <h3 class="form-title">Profile</h3>
+      <div id="profile-view-fields"></div>
+      <div id="profile-edit-request" style="margin-top:16px;">
+        <button class="btn-outline" id="profile-edit-btn">Edit Details (OTP required)</button>
+      </div>
+      <div id="profile-edit-fields" class="hidden" style="margin-top:10px;">
+        <label>OTP</label>
+        <div class="otp-row"><input id="profile-otp" placeholder="Enter the OTP we sent you" /><button class="btn-soft" id="profile-resend-otp">Resend</button></div>
+        <div id="profile-editable-fields"></div>
+        <div style="margin-top:16px;"><button class="btn" id="profile-save-btn" style="width:100%;">Save Changes</button></div>
+      </div>
+      <p class="error-msg" id="profile-error"></p>
+      <p class="success-msg" id="profile-success"></p>
+    </div>
+  </div>
+
+  <!-- ===================== VIDEO CALL VIEW ===================== -->
+  <div id="call-view" class="hidden">
+    <div class="dash-header">
+      <div class="dash-brand"><div class="brand-cross"></div> ATM Consultation</div>
+      <div id="call-status" class="dash-profile-sub">Connecting...</div>
+    </div>
+    <div class="dash-body">
+      <div class="call-shell">
+        <div>
+          <div class="video-stack">
+            <div class="video-main">
+              <video id="call-remote-video" autoplay playsinline></video>
+              <div class="tag" id="call-remote-tag">Peer</div>
+              <div class="video-pip">
+                <video id="call-local-video" autoplay muted playsinline></video>
+                <div class="tag tag-sm">You</div>
+              </div>
+            </div>
+          </div>
+          <div class="call-controls">
+            <button class="icon-btn" id="call-toggle-mic">🎤</button>
+            <button class="icon-btn" id="call-toggle-cam">📷</button>
+            <button class="icon-btn hangup" id="call-hangup">✕</button>
+          </div>
+        </div>
+        <div class="card rx-panel">
+          <h3>Prescription</h3>
+          <div class="rx-list" id="call-rx-list"></div>
+          <div id="call-rx-add-box" class="hidden">
+            <label style="margin:10px 0 4px;">Search ATM Stock</label>
+            <div style="position:relative;">
+              <input id="call-rx-search" placeholder="Type to search medicines..." autocomplete="off" />
+              <div id="call-rx-search-results" class="rx-search-results hidden"></div>
+            </div>
+            <div class="rx-add-row" style="margin-top:8px;">
+              <input id="call-rx-name" placeholder="Medicine name" />
+              <input id="call-rx-dosage" placeholder="Dosage" style="max-width:110px;" />
+            </div>
+            <p class="field-hint" id="call-rx-price-hint"></p>
+            <button class="btn-soft" id="call-rx-add-btn" style="width:100%;margin-top:8px;">+ Add Medicine</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== POST-CALL SUMMARY (patient) ===================== -->
+  <div id="post-call-modal" class="modal-backdrop hidden">
+    <div class="card modal-box">
+      <h3 class="form-title">Consultation Complete</h3>
+      <p class="form-sub">Here's what the doctor prescribed:</p>
+      <div class="rx-list" id="pc-rx-list" style="margin-bottom:16px;"></div>
+
+      <div class="bill-box">
+        <div class="bill-row"><span>Consultation Fee</span><span id="pc-fee-consult">&#8377;0</span></div>
+        <div class="bill-row"><span>Medicines</span><span id="pc-fee-meds">&#8377;0</span></div>
+        <div class="bill-row bill-total"><span>Total</span><span id="pc-fee-total">&#8377;0</span></div>
+      </div>
+
+      <div class="qr-box hidden" id="pc-qr-box">
+        <p class="field-hint" style="text-align:center;margin-top:14px;">Scan to pay via UPI</p>
+        <img id="pc-qr-image" alt="Payment QR code" />
+      </div>
+
+      <button class="btn" id="pc-dispense-btn" style="width:100%;margin-top:16px;">Dispense Medicines</button>
+      <p class="success-msg" id="pc-dispense-success"></p>
+      <div style="margin-top:14px;"><button class="btn-soft" data-close="post-call-modal" style="width:100%;">Close</button></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/camera.js"></script>
+<script src="/js/splash.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/patient.js"></script>
+<script src="/js/doctor.js"></script>
+<script src="/js/admin.js"></script>
+<script src="/js/webrtc.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
