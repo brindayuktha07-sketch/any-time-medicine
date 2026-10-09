@@ -10,12 +10,13 @@ const CallUI = {
   // Google's STUN server plus a free public TURN relay (openrelay.metered.ca) as a
   // fallback — STUN alone can fail to connect on mobile-data or strict corporate
   // networks, and TURN relays the media through a server so the call still connects.
-  ICE_SERVERS: [
+   ICE_SERVERS: [
     { urls: 'stun:stun.l.google.com:19302' },
-    { urls: 'stun:openrelay.metered.ca:80' },
-    { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
-    { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
-    { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
+    { urls: 'stun:stun.relay.metered.ca:80' },
+    { urls: 'turn:global.relay.metered.ca:80', username: 'YOUR_USERNAME', credential: 'YOUR_PASSWORD' },
+    { urls: 'turn:global.relay.metered.ca:80?transport=tcp', username: 'YOUR_USERNAME', credential: 'YOUR_PASSWORD' },
+    { urls: 'turn:global.relay.metered.ca:443', username: 'YOUR_USERNAME', credential: 'YOUR_PASSWORD' },
+    { urls: 'turns:global.relay.metered.ca:443?transport=tcp', username: 'YOUR_USERNAME', credential: 'YOUR_PASSWORD' },
   ],
   offerSent: false,
 
